@@ -1,0 +1,28 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/script.rpy", line 12, in script
+    define config.main_menu_background = "game title cover.jpg"
+  File "renpy/common/000namespaces.rpy", line 34, in set
+    setattr(self.nso, name, value)
+Exception: config.main_menu_background is not a known configuration variable.
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "game/script.rpy", line 12, in script
+    define config.main_menu_background = "game title cover.jpg"
+  File "/Users/derektruong/JAPN/renpy-8.3.2-sdk/renpy/ast.py", line 2235, in execute
+    self.set()
+  File "/Users/derektruong/JAPN/renpy-8.3.2-sdk/renpy/ast.py", line 2253, in set
+    ns.set(self.varname, value)
+  File "renpy/common/000namespaces.rpy", line 34, in set
+    setattr(self.nso, name, value)
+  File "/Users/derektruong/JAPN/renpy-8.3.2-sdk/renpy/defaultstore.py", line 101, in __setattr__
+    raise Exception('config.%s is not a known configuration variable.' % (name))
+Exception: config.main_menu_background is not a known configuration variable.
+
+macOS-14.6.1-arm64-arm-64bit arm64
+Ren'Py 8.3.2.24090902
+フレンチフライ恋路 
+Sun Dec  1 18:45:24 2024

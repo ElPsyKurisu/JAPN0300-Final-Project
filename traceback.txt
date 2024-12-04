@@ -1,0 +1,28 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/script.rpy", line 201, in script
+    if player_age < 18:
+  File "game/script.rpy", line 201, in <module>
+    if player_age < 18:
+TypeError: '<' not supported between instances of 'str' and 'int'
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "game/script.rpy", line 201, in script
+    if player_age < 18:
+  File "C:\Users\geofr\Downloads\Renpy\renpy-8.3.3-sdk\renpy\ast.py", line 1843, in execute
+    if renpy.python.py_eval(condition):
+  File "C:\Users\geofr\Downloads\Renpy\renpy-8.3.3-sdk\renpy\python.py", line 1209, in py_eval
+    return py_eval_bytecode(code, globals, locals)
+  File "C:\Users\geofr\Downloads\Renpy\renpy-8.3.3-sdk\renpy\python.py", line 1202, in py_eval_bytecode
+    return eval(bytecode, globals, locals)
+  File "game/script.rpy", line 201, in <module>
+    if player_age < 18:
+TypeError: '<' not supported between instances of 'str' and 'int'
+
+Windows-10-10.0.22631 AMD64
+Ren'Py 8.3.3.24111502
+フレンチフライ恋路 
+Tue Dec  3 19:18:57 2024

@@ -21,7 +21,8 @@ default work_tacobell = False
 default work_wendys = False
 default work_mcdonalds = False
 default player_name = "たけし"
-default player_age = 20
+default player_age = 21
+default underage = False
 
 default visited_mc = False
 default visited_wendy = False
@@ -63,6 +64,10 @@ label start:
     $ player_age = player_age.strip()
     if (player_age == ""): 
         $ player_age = 21
+    if int(player_age) < 15:
+        $ underage = True
+    if int(player_age) > 116:
+        jump .liar
     $ p = Character(player_name)
 
     #show the dorm
@@ -88,6 +93,8 @@ label start:
 
 
 label .job_choice:
+    if underage:
+        jump .underage_true
     #show providence place mall
     if (visited_bell and visited_mc and visited_wendy):
         jump .after_interviews
@@ -193,10 +200,18 @@ label .wendys_scene_one:
     show harlem at Transform(zoom=0.3, xalign=0.75, yalign=0.03)
     "{i}ウェンディズのオフィス{/i}"
     $ correctness = 0
-    $ wendy_age = int(player_age) + random.randint(2,5)
+    if int(player_age) < 18:
+        $ wendy_age = 23
+        $ too_young_for_wendy = True
+    else:
+        $ wendy_age = int(player_age) + random.randint(2,5)
+        $ too_young_for_wendy = False
 
     show wendy work at Transform(xalign=0.3, yalign=1.1)
-    w "%(player_name)sは%(player_age)sですね～。じつは、あたしは%(wendy_age)sです。かわいい〜"
+    if too_young_for_wendy:
+        w "%(player_name)sは%(player_age)sですね。じつは、あたしは%(wendy_age)sです。"
+    else:
+        w "%(player_name)sは%(player_age)sですね～。じつは、あたしは%(wendy_age)sです。かわいい〜"
     w "じゃあ、自己紹介(じこしょうかい)をお願(ねが)いします。"
 
     menu:
@@ -245,21 +260,26 @@ label .wendys_scene_one:
     
     if (correctness <= 1):
         #show wendy in a diff emotion
-        w "あら〜あら〜、仕事のことを忘れてください。"
-        w "私は自分で二人の生活のためにお金を稼(かせ)いでいます。明日の6時に会ってくれたら、必(かなら)ずお世話(せわ)します。"
-        w "電話番号(でんわばんご)は何ですか?ラインでもいいですか?"
+        #check age to make sure
+        if too_young_for_wendy:
+            w "すみませんが、たくさんの人々がここにおうぼおしました。そして、あなたはここに マッチしません。他のところを探(さが)してください。"
+            w "大人になったら、また挑戦してみてね～"
+        else:
+            w "あら〜あら〜、仕事のことを忘れてください。"
+            w "私は自分で二人の生活のためにお金を稼(かせ)いでいます。明日の6時に会ってくれたら、必(かなら)ずお世話(せわ)します。"
+            w "電話番号(でんわばんご)は何ですか?ラインでもいいですか?"
 
-        menu: 
-            "いいえ":
-                p "いいえ"
-            "ぜったいにない":
-                p "ぜったいにない"
-            "何でも言う通(とお)りだよ、ベイビー。":
-                $ romance_wendy = True
-                p "何でも言う通(とお)りだよ、ベイビー。"
-            "じゃあ、また明日":
-                $ romance_wendy = True
-                p "じゃあ、また明日 :)"
+            menu: 
+                "いいえ":
+                    p "いいえ"
+                "ぜったいにない":
+                    p "ぜったいにない"
+                "何でも言う通(とお)りだよ、ベイビー。":
+                    $ romance_wendy = True
+                    p "何でも言う通(とお)りだよ、ベイビー。"
+                "じゃあ、また明日":
+                    $ romance_wendy = True
+                    p "じゃあ、また明日 :)"
     
     $ visited_wendy = True
     jump .job_choice
@@ -681,3 +701,13 @@ label .wendy_good_ending:
     scene black
     n "{i}これで終わりです。わたしたちのゲームををしてくださってありがとうございます。{/i}"
     return 
+
+label .underage_true:
+    scene game_over
+    n "日本では、働くために15歳以上である必要があります。あなたは%(player_age)s歳です。両親に遊んでほしいって言ってみて！"
+    return
+
+label .liar:
+    scene game_over
+    n "噓（うそ）つきはどろぼうの始まり。あなたは%(player_age)s歳じゃない。やり直してください！"
+    return
